@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="main__body">
+    <!-- Header -->
+    <!-- dashboard body -->
+    <div class="dashboard-body">
+        <!-- left column with nav buttons -->
+        <div class="nav-column">
+            <!-- nav buttons -->
+            <div class="add-form">
+                <h3>Додати нового кліента</h3>
+                <div class="form-cover">
+                    <form id="myForm" method="post" class="glass">
+                        <label for="firstName">Им’я:</label><br>
+                        <input type="text" id="firstName" name="firstName"><br><br>
+
+                        <label for="lastName">Прізвище:</label><br>
+                        <input type="text" id="lastName" name="lastName"><br><br>
+
+                        <label for="phoneNumber">Номер телефона:</label>
+                        <input type="text" id="phoneNumber" name="phoneNumber"><br><br>
+
+                        <label for="cardNumber">Номер картки:</label><br>
+                        <input type="number" id="cardNumber" name="cardNumber" min="0" step="1"><br><br>
+
+                        <label for="bonusPoints">Кількість бонусів:</label>
+                        <input type="text" id="bonusPoints" name="bonusPoints"><br><br>
+
+                        <label for="birthdate">Дата народження:</label><br>
+                        <input type="date" id="birthdate" name="birthdate"><br><br>
+
+                        <button type="submit">Додати</button>
+                    </form>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <!-- center column with content -->
+        <div class="content-column">
+            <div class="cover">
+                <div class="title-row">
+                    <h2>Список клієнтів</h2>
+                    <div class="search-bar">
+                        <select id="search_type">
+                            <option value="card_number">Номер Картки</option>
+                            <option value="phone_number">Номер телефону</option>
+                        </select>
+                        <input type="text" id="search_value"> <!-- Rename this from "card_number" to "search_value" -->
+                        <button onclick="searchByPhoneNumber()"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <button class="confirm-btn-changes" id="saveChanges" onclick="saveChanges()">Зберегти</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-table">                
+                <table class="my-table">
+                    <thead>
+                        <tr>
+                            <th>Им’я</th>
+                            <th>Прізвище</th>
+                            <th>Номер картки</th>
+                            <th>Номер телефона</th>
+                            <th>Кількість бонусів</th>
+                            <th>Дата народження</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr>
+                            <td contenteditable="true" ondblclick="enableEditing(event)">{{ row.first_name }}</td>
+                            <td contenteditable="true" ondblclick="enableEditing(event)">{{ row.last_name }}</td>
+                            <td contenteditable="true" ondblclick="enableEditing(event)">{{ row.card_number }}</td>
+                            <td contenteditable="true" ondblclick="enableEditing(event)">{{ row.phone_number }}</td>
+                            <td contenteditable="true" ondblclick="enableEditing(event)">{{ row.bonus_points }}</td>
+                            <td contenteditable="true" ondblclick="enableEditing(event)">{{ row.birthdate }}</td>
+                            <input type="hidden" class="record-id" value="{{ row.id }}">
+                        </tr>
+                        {% endfor %}
+                
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- right column with user info -->
+        <div class="user-column">
+
+        </div>
+    </div>
+
+    <main></main>
+
+    <!-- Connect script.js -->
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
+</body>
+
+</html>
