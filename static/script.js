@@ -62,6 +62,33 @@ function updateRecord(row) {
         })
     }
 
+
+// Add this new function to handle search
+function search() {
+    const searchType = document.getElementById('search_type').value;
+    const searchQuery = document.getElementById('search_query').value;
+
+    fetch(`/search?search_type=${searchType}&search_query=${searchQuery}`)
+        .then(response => response.json())
+        .then(json => {
+            if (json.status === 'error') {
+                alert('Error: ' + json.message);
+            } else {
+                displayResults(json);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while searching');
+        });
+}
+
+// Modify the 'DOMContentLoaded' event in your scripts.js
+document.addEventListener('DOMContentLoaded', function () {
+    refreshTableData(); // Refresh table data when the page is loaded
+    document.getElementById('search_button').addEventListener('click', search); // Add this line to attach the event listener to the search button
+});
+   
     // Refresh table data when the page is loaded
 document.addEventListener('DOMContentLoaded', function () {
     refreshTableData();

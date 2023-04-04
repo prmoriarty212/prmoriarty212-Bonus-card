@@ -144,11 +144,30 @@ def export_csv():
 
     return response
 
+@app.route('/search', methods=['GET'])
+def search():
+    search_type = request.args.get('search_type')
+    search_query = request.args.get('search_query')
+
+    if search_type == 'phone_number':
+        data = FormData.query.filter(FormData.phone_number.contains(search_query)).all()
+    elif search_type == 'card_number':
+        data = FormData.query.filter(FormData.card_number.contains(search_query)).all()
+    else:
+        return jsonify({'status': 'error', 'message': 'Invalid search type'})
+
+    results = []
+    for row in data:
+        results.append(row.to_dict())
+
+    return jsonify(results)
+
+
 # Function for creating the tables in the database before the first request
 @app.before_first_request
 def create_tables():
     db.create_all()
 
-# main entry point for the application
+# main entry point for the app
 if __name__ == '__main__':
     app.run(debug=True)
