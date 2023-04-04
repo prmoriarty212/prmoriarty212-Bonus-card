@@ -1,5 +1,7 @@
+// Variable to store the currently selected row for editing
 let selectedRow = null;
 
+// Function to enable editing of the table cell on focus
 function enableEditing(event) {
     let target = event.target;
     target.focus();
@@ -7,19 +9,20 @@ function enableEditing(event) {
 
     if (!selectedRow) {
         selectedRow = target.parentElement;
-        document.getElementById('saveChanges').style.display = 'block';
     }
 }
 
+// Function to save the changes after editing a table cell
 function saveChanges() {
     if (selectedRow) {
         updateRecord(selectedRow);
         selectedRow = null;
-        document.getElementById('saveChanges').style.display = 'none';
     }
 }
 
+// Function to send an update request for a record
 function updateRecord(row) {
+    // Collect the updated data from the table row
     let recordId = row.querySelector('.record-id').value;
     let first_name = row.children[0].innerText;
     let last_name = row.children[1].innerText;
@@ -38,6 +41,7 @@ function updateRecord(row) {
         birthdate: birthdate
     };
     
+    // Send the updated data to the server
     fetch('/update_record', {
         method: 'PUT',
         headers: {
@@ -58,19 +62,21 @@ function updateRecord(row) {
         })
     }
 
-    // When the page is loaded
+    // Refresh table data when the page is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    refreshTableData(); // Refresh table data when the page is loaded
+    refreshTableData();
     });
 
-
+    // Function to display the fetched data in the table
     function displayResults(data) {
         let tableBody = document.querySelector('.my-table tbody');
         tableBody.innerHTML = '';
-    
+        
+        // Create table rows and cells for each record
         data.forEach(record => {
             let row = document.createElement('tr');
-    
+            
+            // Create and append each cell to the row
             let firstNameCell = document.createElement('td');
             firstNameCell.innerText = record.first_name;
             firstNameCell.contentEditable = 'true';
@@ -112,12 +118,13 @@ document.addEventListener('DOMContentLoaded', function () {
             recordIdInput.classList.add('record-id');
             recordIdInput.value = record.id;
             row.appendChild(recordIdInput);
-        
+            
+            // Append the row to the table body
             tableBody.appendChild(row);
         });
     }        
     
-
+    // Function to fetch and display the table data
     function refreshTableData() {
         fetch('/get_table_data')
             .then(response => response.json())
@@ -132,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    // Function to handle key press events in editable table cells
     function handleKeyPress(event, target) {
         if (event.keyCode === 13) { // Check if the pressed key is Enter (keyCode 13)
             event.preventDefault(); // Prevent the default action

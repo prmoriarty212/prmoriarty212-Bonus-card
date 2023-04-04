@@ -295,3 +295,19 @@ h6 {
   background-color: #1f1b18;
 }
 
+/* Export-btn */
+.export-btn {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #252525;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+.export-btn:hover {
+  background-color: #1f1b18;
+}
+
