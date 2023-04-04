@@ -1,7 +1,10 @@
+import csv
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.orm import Session
+from flask import make_response
+from io import StringIO
 
 
 app = Flask(__name__)
@@ -91,7 +94,27 @@ def get_table_data():
     return jsonify(results)
 
 
+@app.route('/export_csv', methods=['GET'])
+def export_csv():
+    data = FormData.query.all()
+    headers = ['id', 'first_name', 'last_name', 'card_number', 'phone_number', 'bonus_points', 'birthdate']
+    
+    def generate():
+        csv_data = StringIO()
+        writer = csv.writer(csv_data, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(headers)
 
+        for row in data:
+            writer.writerow([row.id, row.first_name, row.last_name, row.card_number, "'" + row.phone_number, row.bonus_points, row.birthdate])
+        
+        csv_data.seek(0)
+        return csv_data.getvalue()
+
+    response = make_response(generate())
+    response.headers['Content-Disposition'] = 'attachment; filename=data.csv'
+    response.headers['Content-type'] = 'text/csv; charset=utf-8-sig'
+
+    return response
 
 
 @app.before_first_request
