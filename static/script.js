@@ -87,6 +87,7 @@ function search() {
 document.addEventListener('DOMContentLoaded', function () {
     refreshTableData(); // Refresh table data when the page is loaded
     document.getElementById('search_button').addEventListener('click', search); // Add this line to attach the event listener to the search button
+    document.getElementById('refresh_button').addEventListener('click', refreshTableData);
 });
    
     // Refresh table data when the page is loaded
